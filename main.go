@@ -6,6 +6,12 @@ import (
 	"os"
 )
 
+type cliCommand struct {
+	name        string
+	description string
+	callback    func() error
+}
+
 func main() {
 	fmt.Println("Pokedex>")
 	scanner := bufio.NewScanner(os.Stdin)
