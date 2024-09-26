@@ -26,6 +26,7 @@ func repl() {
 		command, ok := getCommands()[commandName]
 		if !ok {
 			fmt.Println("Command not found")
+			fmt.Println()
 		} else {
 			err := command.callback()
 			if err != nil {
