@@ -24,7 +24,10 @@ func repl() {
 		if !ok {
 			fmt.Println("Command not found")
 		} else {
-			command.callback()
+			err := command.callback()
+			if err != nil {
+				fmt.Println(err)
+			}
 		}
 	}
 
@@ -38,6 +41,11 @@ func cleanInput(text string) []string {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
+		"help": {
+			name:        "help",
+			description: "Displays a help message",
+			callback:    commandHelp,
+		},
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
