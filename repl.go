@@ -19,6 +19,9 @@ func repl() {
 		fmt.Print("Pokedex>")
 		scanner.Scan()
 		input := cleanInput(scanner.Text())
+		if len(input) == 0 {
+			continue
+		}
 		commandName := input[0]
 		command, ok := getCommands()[commandName]
 		if !ok {
