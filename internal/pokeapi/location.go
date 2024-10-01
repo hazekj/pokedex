@@ -6,8 +6,11 @@ import (
 	"net/http"
 )
 
-func (c *Client) listLocations() (pokeLocation, error) {
+func (c *Client) ListLocations(pokeLoc string) (pokeLocation, error) {
 	url := baseURL + "/location-area"
+	if pokeLoc != "" {
+		url = pokeLoc
+	}
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return pokeLocation{}, err
