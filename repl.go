@@ -5,17 +5,26 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/hazekj/pokedex/internal/pokeapi"
 )
+
+type config struct {
+	pokeClient  pokeapi.Client
+	NextURL     string
+	PreviousURL string
+}
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func() error
+	callback    func(*config) error
 }
 
-func repl() {
+func repl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
+		fmt.Println()
 		fmt.Print("Pokedex>")
 		scanner.Scan()
 		input := cleanInput(scanner.Text())
@@ -28,7 +37,7 @@ func repl() {
 			fmt.Println("Command not found")
 			fmt.Println()
 		} else {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -54,6 +63,16 @@ func getCommands() map[string]cliCommand {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+		},
+		"map": {
+			name:        "map",
+			description: "List map regions",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "List map regions (backwards)",
+			callback:    commandMapBack,
 		},
 	}
 }
