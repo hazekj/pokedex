@@ -3,7 +3,7 @@ package pokeapi
 type pokeLocation struct {
 	Count    int
 	Next     string
-	Previous any
+	Previous string
 	Results  []struct {
 		Name string
 		URL  string
