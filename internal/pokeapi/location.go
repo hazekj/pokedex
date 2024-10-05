@@ -11,6 +11,17 @@ func (c *Client) ListLocations(pokeLoc string) (pokeLocation, error) {
 	if pokeLoc != "" {
 		url = pokeLoc
 	}
+
+	val, ok := c.cache.Get(url)
+	if ok {
+		pokeRes := pokeLocation{}
+		err := json.Unmarshal(val, &pokeRes)
+		if err != nil {
+			return pokeLocation{}, err
+		}
+		return pokeRes, nil
+	}
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return pokeLocation{}, err
@@ -32,6 +43,8 @@ func (c *Client) ListLocations(pokeLoc string) (pokeLocation, error) {
 	if err != nil {
 		return pokeLocation{}, err
 	}
+
+	c.cache.Add(url, data)
 
 	return pokeRes, nil
 }
