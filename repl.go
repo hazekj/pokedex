@@ -18,7 +18,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 
 func repl(cfg *config) {
@@ -31,13 +31,23 @@ func repl(cfg *config) {
 		if len(input) == 0 {
 			continue
 		}
+		if len(input) > 2 {
+			fmt.Println("Invalid number of parameters")
+			fmt.Println()
+			continue
+		}
 		commandName := input[0]
+
 		command, ok := getCommands()[commandName]
 		if !ok {
 			fmt.Println("Command not found")
 			fmt.Println()
 		} else {
-			err := command.callback(cfg)
+			var commandParameter string
+			if len(input) == 2 {
+				commandParameter = input[1]
+			}
+			err := command.callback(cfg, commandParameter)
 			if err != nil {
 				fmt.Println(err)
 			}
