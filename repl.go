@@ -84,5 +84,10 @@ func getCommands() map[string]cliCommand {
 			description: "List map regions (backwards)",
 			callback:    commandMapBack,
 		},
+		"explore": {
+			name:        "explore <location-name>",
+			description: "Explore pokemon in location",
+			callback:    commandExplore,
+		},
 	}
 }
